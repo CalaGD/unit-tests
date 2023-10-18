@@ -1,0 +1,11 @@
+FROM 020413372491.dkr.ecr.us-east-1.amazonaws.com/base/gdc-c9s:20231009
+
+RUN dnf -y install mariadb-server systemd && dnf clean all
+COPY *.cnf /etc/my.cnf.d/
+COPY *.service /usr/lib/systemd/system/
+COPY *.sql /opt/
+RUN systemctl enable mariadb.service mariadb-finalize.service
+
+EXPOSE 3306
+
+CMD [ "/usr/sbin/init" ]

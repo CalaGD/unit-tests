@@ -1,0 +1,12 @@
+FROM 020413372491.dkr.ecr.us-east-1.amazonaws.com/base/gdc-c9s:20231009
+
+COPY *.repo /etc/yum.repos.d/
+RUN dnf -y install gdc-perl-GDC-Bundle-CommonMin-t-unit mariadb postgresql vertica-odbc vertica-client && dnf clean all
+COPY run-tests.sh /usr/local/bin/
+
+ENV GDCTEST_MARIADB_HOST mariadb
+ENV GDCTEST_MYSQL_HOST mariadb
+ENV GDCTEST_PG_HOST postgres
+ENV GDCTEST_VERTICA_HOST vertica
+
+ENTRYPOINT [ "/usr/local/bin/run-tests.sh" ]
