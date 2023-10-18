@@ -1,0 +1,3 @@
+#!/bin/bash
+# (C) 2022 GoodData Corporation
+sed  -i '/^mysql_users/a { password = "testpass", username = "test" },' /etc/proxysql.cnf

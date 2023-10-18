@@ -1,0 +1,30 @@
+FROM 020413372491.dkr.ecr.us-east-1.amazonaws.com/base/gdc-c9s:20231009
+
+COPY *.repo /etc/yum.repos.d/
+
+RUN dnf -y install		\
+    gdc-common 			\
+    gdc-common-t-unit		\
+    gdc-rat			\
+    gdc-resources		\
+    gdc-resources-specification	\
+    gdc-resources-t-rest	\
+    gdc-resources-t-unit	\
+    gdc-workers			\
+    md-gc			\
+    vertica-client		\
+    vertica-odbc		\
+    mariadb			\
+    postgresql			\
+    && dnf clean all		\
+    && true
+
+COPY run-tests.sh /usr/local/bin/
+
+ENV GDCTEST_MARIADB_HOST mariadb
+ENV GDCTEST_MYSQL_HOST mariadb
+ENV GDCTEST_PG_HOST postgres
+ENV GDCTEST_VERTICA_HOST vertica
+ENV GDCTEST_RABBITMQ_HOST=rabbitmq 
+
+ENTRYPOINT [ "/usr/local/bin/run-tests.sh" ]

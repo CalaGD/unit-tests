@@ -1,0 +1,11 @@
+[Unit]
+Before=postgresql-15.service
+ConditionDirectoryNotEmpty=!/var/lib/pgsql/15/data/
+
+[Service]
+Type=oneshot
+ExecStart=/usr/pgsql-15/bin/postgresql-15-setup initdb
+ExecStart=/usr/bin/sh -c 'echo "client_min_messages = warning" >> /var/lib/pgsql/15/data/postgresql.conf'
+
+[Install]
+WantedBy=multi-user.target
