@@ -1,4 +1,5 @@
 [tools-develop]
+name=tools-develop
 baseurl=http://na1-pulp-cache.ii.prodgdc.com:60080/tools/develop/centos/$releasever/$basearch/
 enabled=1
 gpgcheck=0

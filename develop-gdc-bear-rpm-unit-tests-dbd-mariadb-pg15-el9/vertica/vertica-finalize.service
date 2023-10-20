@@ -6,6 +6,7 @@ Type=oneshot
 User=vertica
 Group=vertica
 ExecStart=/opt/vertica/bin/vsql -f /opt/setup-unit.sql
+ExecStart=/bin/bash /opt/smollcfg.sh
 
 [Install]
 WantedBy=multi-user.target

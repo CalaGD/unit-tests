@@ -1,4 +1,5 @@
 [gdc-develop]
+name=gdc-develop
 baseurl=http://na1-pulp-cache.ii.prodgdc.com:60080/gdc-develop-$releasever/
 enabled=1
 gpgcheck=0
