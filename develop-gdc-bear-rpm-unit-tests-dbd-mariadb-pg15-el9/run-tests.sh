@@ -2,12 +2,16 @@
 
 set -euo pipefail
 
-
-TESTDIRS=(/opt/common/t/Tools/AttributeDisplayForm.t)
-#TESTDIRS=(       
-#	/opt/common/t 
-#      	/opt/resources/t
-#)
+if [ ! $# -eq 0 ];
+then
+	IT="-v $1"
+	TESTDIRS=($1)
+else
+	TESTDIRS=(       
+		/opt/common/t 
+	      	/opt/resources/t
+	)
+fi
 
 PROVE_INC=(
 	-I/opt/common/blib 
@@ -20,4 +24,4 @@ PROVE_INC=(
 )
 
 env GDC_NO_INTEGRATION_TESTS=1 VERTICAINI=1 \
-  prove "${PROVE_INC[@]}" -r -v "${TESTDIRS[@]}"
+  prove "${PROVE_INC[@]}" -r "${TESTDIRS[@]}"
