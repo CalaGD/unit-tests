@@ -5,7 +5,7 @@ set -euo pipefail
 if [ ! $# -eq 0 ];
 then
 	IT="-v $1"
-	TESTDIRS=($1)
+	TESTDIRS=($IT)
 else
 	TESTDIRS=(       
 		/opt/common/t 
