@@ -16,9 +16,9 @@ RUN /opt/vertica/sbin/install_vertica --license CE --accept-eula --hosts localho
 
 COPY *.service /usr/lib/systemd/system/
 COPY *.sql /opt/
-COPY smollcfg.sh /opt/
+COPY add-path.sh /opt/
 
-RUN chmod +x /opt/smollcfg.sh
+RUN chmod +x /opt/add-path.sh
 RUN systemctl enable vertica-init.service vertica.service vertica-finalize.service
 
 EXPOSE 5433
