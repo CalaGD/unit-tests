@@ -45,17 +45,24 @@ parse_args() {
 
 # Stop and remove the test containers and volumes
 stop_and_clean() {
-  if podman pod exists test-gdc-res-base; then
-    podman pod stop test-gdc-res-base
-    podman pod rm test-gdc-res-base
+  if podman pod exists perl-gdc-taskmanager; then
+    podman pod stop perl-gdc-taskmanager
+    podman pod rm perl-gdc-taskmanager
+  fi
+  if podman volume exists vt-tests-sv; then
+    podman volume rm vt-tests-sv
   fi
 }
 
 # Build and create the test containers and volumes
 build_and_create() {
+  podman volume create vt-tests-sv
+
+  podman build -t vertica vertica
   podman build -t tests .
 
-  podman pod create test-gdc-res-base
+  podman pod create perl-gdc-taskmanager
+  podman run --pod perl-gdc-taskmanager -d --name vertica -v vt-tests-sv:/tmp/mddwh_vertica_export_temp vertica
 }
 
 # Run the tests
@@ -63,16 +70,16 @@ run_tests() {
   if [ "$ATTACH" -eq 1 ];
   then
     # Attach to the container after running
-    podman run -it --pod test-gdc-res-base --entrypoint /usr/bin/bash tests
+    podman run -it --pod perl-gdc-taskmanager --entrypoint /usr/bin/bash -v vt-tests-sv:/tmp/mddwh_vertica_export_temp tests
   else
 	if [ ! -z "$TEST_PATH" ];
     	then
       		# Run a single test file
-      		podman run -it --pod test-gdc-res-base tests $TEST_PATH
-      	else
+      		podman run -it --pod perl-gdc-taskmanager -v vt-tests-sv:/tmp/mddwh_vertica_export_temp tests $TEST_PATH
+     	else
     		# Run all tests
-	   	podman run -it --pod test-gdc-res-base tests
-	fi
+    		podman run -it --pod perl-gdc-taskmanager -v vt-tests-sv:/tmp/mddwh_vertica_export_temp tests
+  	fi
   fi
 }
 

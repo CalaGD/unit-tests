@@ -81,15 +81,15 @@ run_tests() {
   then
     # Attach to the container after running
     podman run -it --pod test-gdc-bear --entrypoint /usr/bin/bash -v pg-tests-sv:/tmp/mddwh_pg_export_test -v vt-tests-sv:/tmp/mddwh_vertica_export_temp tests
-    exit 1;
-  else if [ ! -z "$TEST_PATH" ];
-    then
-      # Run a single test file
-      podman run -it --pod test-gdc-bear -v pg-tests-sv:/tmp/mddwh_pg_export_test -v vt-tests-sv:/tmp/mddwh_vertica_export_temp tests $TEST_PATH
-      exit 1;
-    fi
-    # Run all tests
-    podman run -it --pod test-gdc-bear -v pg-tests-sv:/tmp/mddwh_pg_export_test -v vt-tests-sv:/tmp/mddwh_vertica_export_temp tests
+  else
+	if [ ! -z "$TEST_PATH" ];
+	then
+      		# Run a single test file
+      		podman run -it --pod test-gdc-bear -v pg-tests-sv:/tmp/mddwh_pg_export_test -v vt-tests-sv:/tmp/mddwh_vertica_export_temp tests $TEST_PATH
+     	else
+		# Run all tests
+		podman run -it --pod test-gdc-bear -v pg-tests-sv:/tmp/mddwh_pg_export_test -v vt-tests-sv:/tmp/mddwh_vertica_export_temp tests
+	fi
   fi
 }
 

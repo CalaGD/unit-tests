@@ -3,11 +3,17 @@ FROM 020413372491.dkr.ecr.us-east-1.amazonaws.com/base/gdc-c9s:20231009
 COPY *.repo /etc/yum.repos.d/
 
 RUN dnf -y install			\
-    gdc-perl-GDC-Bundle-ResBase 	\
-    gdc-perl-GDC-Bundle-ResBase-t-unit	\
+    gdc-perl-GDC-TaskManager		\
+    gdc-perl-GDC-TaskManager-t-unit	\
+    gdc-perl-GDC-Bundle-CommonMin	\
+    vertica-client			\
+    vertica-odbc			\
     && dnf clean all			\
     && true
 
 COPY run-tests.sh /usr/local/bin/
+COPY c3.conf /etc/gdc/
+
+ENV GDCTEST_VERTICA_HOST vertica
 
 ENTRYPOINT [ "/usr/local/bin/run-tests.sh" ]

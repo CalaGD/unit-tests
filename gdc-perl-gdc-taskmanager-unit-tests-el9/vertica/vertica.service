@@ -1,0 +1,9 @@
+[Service]
+Type=forking
+User=vertica
+Group=vertica
+LimitNOFILE=1048576
+ExecStart=/opt/vertica/bin/admintools -t start_db -d verticadb -i
+
+[Install]
+WantedBy=multi-user.target
