@@ -5,23 +5,16 @@ COPY *.repo /etc/yum.repos.d/
 RUN dnf -y install		\
     gdc-common 			\
     gdc-common-t-unit		\
-    gdc-rat			\
-    gdc-resources		\
-    gdc-resources-specification	\
-    gdc-resources-t-rest	\
-    gdc-resources-t-unit	\
-    gdc-workers			\
-    md-gc			\
     vertica-client		\
     vertica-odbc		\
     mariadb			\
     postgresql			\
-    diffutils			\
+    gdc-perl-GDC-Bundle-ResBase.noarch \
+    gdc-perl-GDC-Bundle-ResBase-t-unit.noarch \
     && dnf clean all		\
     && true
 
 COPY run-tests.sh /usr/local/bin/
-COPY c3.conf /etc/gdc/
 
 ENV GDCTEST_MARIADB_HOST mariadb
 ENV GDCTEST_MYSQL_HOST mariadb

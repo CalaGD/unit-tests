@@ -45,9 +45,9 @@ parse_args() {
 
 # Stop and remove the test containers and volumes
 stop_and_clean() {
-  if podman pod exists test-gdc-bear; then
-    podman pod stop test-gdc-bear
-    podman pod rm test-gdc-bear
+  if podman pod exists test-gdc-res-base; then
+    podman pod stop test-res-base
+    podman pod rm test-res-base
   fi
   if podman volume exists pg-tests-sv; then
     podman volume rm pg-tests-sv
@@ -62,17 +62,17 @@ build_and_create() {
   podman volume create pg-tests-sv
   podman volume create vt-tests-sv
 
-  podman build -t mariadb mariadb
-  podman build -t postgres postgres
-  podman build -t vertica vertica
-  podman build -t rabbitmq rabbitmq
+  #podman build -t mariadb mariadb
+  #podman build -t postgres postgres
+  #podman build -t vertica vertica
+  #podman build -t rabbitmq rabbitmq
   podman build -t tests .
 
-  podman pod create test-gdc-bear
-  podman run --pod test-gdc-bear -d --name postgres -v pg-tests-sv:/tmp/mddwh_pg_export_test postgres
-  podman run --pod test-gdc-bear -d --name mariadb mariadb
-  podman run --pod test-gdc-bear -d --name vertica -v vt-tests-sv:/tmp/mddwh_vertica_export_temp vertica
-  podman run --pod test-gdc-bear -d --name rabbitmq rabbitmq
+  podman pod create test-gdc-res-base
+  #podman run --pod test-gdc-res-base -d --name postgres -v pg-tests-sv:/tmp/mddwh_pg_export_test postgres
+  #podman run --pod test-gdc-res-base -d --name mariadb mariadb
+  #podman run --pod test-gdc-res-base -d --name vertica -v vt-tests-sv:/tmp/mddwh_vertica_export_temp vertica
+  #podman run --pod test-gdc-res-base -d --name rabbitmq rabbitmq
 }
 
 # Run the tests
@@ -80,16 +80,16 @@ run_tests() {
   if [ "$ATTACH" -eq 1 ];
   then
     # Attach to the container after running
-    podman run -it --pod test-gdc-bear --entrypoint /usr/bin/bash -v pg-tests-sv:/tmp/mddwh_pg_export_test -v vt-tests-sv:/tmp/mddwh_vertica_export_temp tests
+    podman run -it --pod test-gdc-res-base --entrypoint /usr/bin/bash -v pg-tests-sv:/tmp/mddwh_pg_export_test -v vt-tests-sv:/tmp/mddwh_vertica_export_temp tests
     exit 1;
   else if [ ! -z "$TEST_PATH" ];
     then
       # Run a single test file
-      podman run -it --pod test-gdc-bear -v pg-tests-sv:/tmp/mddwh_pg_export_test -v vt-tests-sv:/tmp/mddwh_vertica_export_temp tests $TEST_PATH
+      podman run -it --pod test-gdc-res-base -v pg-tests-sv:/tmp/mddwh_pg_export_test -v vt-tests-sv:/tmp/mddwh_vertica_export_temp tests $TEST_PATH
       exit 1;
     fi
     # Run all tests
-    podman run -it --pod test-gdc-bear -v pg-tests-sv:/tmp/mddwh_pg_export_test -v vt-tests-sv:/tmp/mddwh_vertica_export_temp tests
+    podman run -it --pod test-gdc-res-base -v pg-tests-sv:/tmp/mddwh_pg_export_test -v vt-tests-sv:/tmp/mddwh_vertica_export_temp tests
   fi
 }
 
