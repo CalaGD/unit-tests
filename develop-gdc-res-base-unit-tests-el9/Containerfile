@@ -5,21 +5,11 @@ COPY *.repo /etc/yum.repos.d/
 RUN dnf -y install		\
     gdc-common 			\
     gdc-common-t-unit		\
-    vertica-client		\
-    vertica-odbc		\
-    mariadb			\
-    postgresql			\
     gdc-perl-GDC-Bundle-ResBase.noarch \
     gdc-perl-GDC-Bundle-ResBase-t-unit.noarch \
     && dnf clean all		\
     && true
 
 COPY run-tests.sh /usr/local/bin/
-
-ENV GDCTEST_MARIADB_HOST mariadb
-ENV GDCTEST_MYSQL_HOST mariadb
-ENV GDCTEST_PG_HOST postgres
-ENV GDCTEST_VERTICA_HOST vertica
-ENV GDCTEST_RABBITMQ_HOST rabbitmq 
 
 ENTRYPOINT [ "/usr/local/bin/run-tests.sh" ]

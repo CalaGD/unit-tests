@@ -1,7 +1,0 @@
-[mysqld]
-default-storage-engine=InnoDB
-character_set_client=utf8mb4
-collation_server=utf8mb4_unicode_ci
-character-set-server=utf8mb4
-ft_stopword_file=''
-sql_mode=""

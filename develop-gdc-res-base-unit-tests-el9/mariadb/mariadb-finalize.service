@@ -1,9 +1,0 @@
-[Unit]
-After=mariadb.service
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/sh -c 'mysql < /opt/setup-unit.sql'
-
-[Install]
-WantedBy=multi-user.target
