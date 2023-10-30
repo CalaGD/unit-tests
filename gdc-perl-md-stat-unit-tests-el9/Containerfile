@@ -1,0 +1,19 @@
+FROM 020413372491.dkr.ecr.us-east-1.amazonaws.com/base/gdc-c9s:20231009
+
+COPY *.repo /etc/yum.repos.d/
+
+RUN dnf -y install	\
+    gdc-workers		\
+    mariadb		\
+    && dnf clean all	\
+    && true
+
+COPY run-tests.sh /usr/local/bin/
+COPY md-stat-export /opt/quality/test/unit/gdc-perl-md-stat/md-stat-export
+COPY md-stat-launcher /opt/quality/test/unit/gdc-perl-md-stat/md-stat-launcher
+COPY md-stat-sender /opt/quality/test/unit/gdc-perl-md-stat/md-stat-sender
+
+ENV GDCTEST_MARIADB_HOST mariadb
+ENV GDCTEST_MYSQL_HOST mariadb
+
+ENTRYPOINT [ "/usr/local/bin/run-tests.sh" ]
