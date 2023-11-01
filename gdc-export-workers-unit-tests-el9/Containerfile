@@ -1,0 +1,13 @@
+FROM 020413372491.dkr.ecr.us-east-1.amazonaws.com/base/gdc-c9s:20231009
+
+COPY *.repo /etc/yum.repos.d/
+
+RUN dnf -y install				\
+    gdc-perl-GDC-Bundle-Exporter-Workers	\
+    gdc-perl-GDC-Bundle-Exporter-Workers-t-unit \
+    && dnf clean all				\
+    && true
+
+COPY run-tests.sh /usr/local/bin/
+
+ENTRYPOINT [ "/usr/local/bin/run-tests.sh" ]
